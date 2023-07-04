@@ -2,6 +2,8 @@ let csvFile;
 let listVille = [];
 let nbPermutation = 0;
 let nbComparaison = 0;
+const GrenobleLat = 45.166667;
+const GrenobleLong = 5.71667;
 
 document.querySelector("#read-button").addEventListener('click', function () {
     csvFile = document.querySelector("#file-input").files[0];
@@ -62,7 +64,19 @@ function getArrayCsv(csv) {
  */
 function distanceFromGrenoble(ville) {
     console.log('implement me !');
-    return 0;
+    const R = 6371e3; // metres
+    const φ1 = GrenobleLat * Math.PI/180; // φ, λ in radians
+    const φ2 = ville.latitude * Math.PI/180;
+    const Δφ = (ville.latitude-GrenobleLat) * Math.PI/180;
+    const Δλ = (ville.longitude-GrenobleLong) * Math.PI/180;
+    
+    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    
+    const d = (R * c) /1000; // in km
+    return d;
 }
 
 /**
@@ -74,7 +88,7 @@ function distanceFromGrenoble(ville) {
  */
 function isLess(i, j) {
     console.log('implement me !');
-    return true;
+    return listVille[i].distanceFromGrenoble < listVille[j].distanceFromGrenoble;
 }
 
 /**
@@ -84,6 +98,9 @@ function isLess(i, j) {
  */
 function swap(i, j) {
     console.log('implement me !');
+    let temp = listVille[i];
+    listVille[i] = listVille[j] ;
+    listVille[j] = temp;
 }
 
 function sort(type) {
@@ -114,18 +131,65 @@ function sort(type) {
 
 function insertsort() {
     console.log("insertsort - implement me !");
+    for (let i = 1; i < listVille.length; i++) {
+        let j = i;
+        while(j>0 && isLess(j, j-1)){
+            swap(j, j - 1);
+            j = j-1;
+        }
+    }
 }
 
 function selectionsort() {
     console.log("selectionsort - implement me !");
+    for (let i = 0; i < listVille.length; i++) {
+        let min = i;
+        for (let j = i + 1; j < listVille.length; j++) {
+          if (isLess(j, min)) {
+            min = j;
+          }
+        }
+        swap(i, min);
+      }
 }
 
 function bubblesort() {
     console.log("bubblesort - implement me !");
+    let passage = 0;
+    let permut = true;
+    do {
+      permut = false;
+      for (i = 0; i < (listVille.length - 1 - passage); i++) {
+        if (isLess(i+1, i)) {
+          swap(i, i + 1);
+          permut = true;
+        }
+      }
+      passage++;
+    } while (permut)
 }
 
 function shellsort() {
     console.log("shellsort - implement me !");
+    let l = listVille.length;
+    let n = 0;
+
+    while(n< l/3){
+        n = 3*n + 1; 
+    }
+
+    while(n !=0){
+        for(let i = n; i < l; i++){
+            let temp = listVille[i];
+            let j = i;
+            while(j> n-1 && listVille[j-n].distanceFromGrenoble > temp.distanceFromGrenoble){
+                listVille[j] = listVille[j-n];
+                j = j - n;
+            }
+            listVille[j] = temp ;
+        }
+        n = ((n-1)/3);
+    }
 }
 
 function mergesort() {
