@@ -193,9 +193,38 @@ function shellsort() {
 }
 
 function mergesort() {
-    console.log("mergesort - implement me !");
+  console.log("mergesort - implement me !");
+  listVille = _mergesort(listVille);
 }
 
+function _mergesort(inputArr) {
+    if(inputArr.length <2){
+        return inputArr;
+    }else{
+      let m =  Math.floor(inputArr.length / 2);
+      let right = inputArr.slice(m);
+      let left = inputArr.slice(0, m);
+      return _merge(_mergesort(left), _mergesort(right));
+    }
+}
+  
+function _merge(left, right){
+    if(left.length == 0){
+        return right;
+    }
+    if(right.length == 0){
+        return left ;
+    }
+    if(left[0].distanceFromGrenoble <= right[0].distanceFromGrenoble){
+        let tab = _merge(left.slice(1), right);
+        tab.unshift(left[0]);
+        return tab ;
+    }else {
+      let tab = _merge(left , right.slice(1));
+      tab.unshift(right[0]);
+      return tab ;
+    }
+}
 
 function heapsort() {
     console.log("heapsort - implement me !");
@@ -203,8 +232,52 @@ function heapsort() {
 
 function quicksort() {
     console.log("quicksort - implement me !");
+    listVille = _quicksort2(listVille, 0 ,listVille.length-1);
+    // listVille = quick_sort1(listVille);
+    
+}
+function quick_sort1(arr){
+    if (arr.length < 2) {
+        return arr;
+    }
+    let pivot = arr[arr.length-1];
+    let leftArr = [];
+    let rightArr = [];
+    
+    for (let i = 0; i < arr.length-1; i++) {
+        if (arr[i].distanceFromGrenoble < pivot.distanceFromGrenoble) {
+            leftArr.push(arr[i]);
+        } else {
+            rightArr.push(arr[i]);
+        }
+    }
+    
+    return [...quick_sort1(leftArr), pivot, ...quick_sort1(rightArr)];
 }
 
+function _quicksort2(inputarr , first, last) {
+    if (last - first < 1) {
+        return inputarr;
+    }
+
+    pi = _partition(inputarr, first, last);
+    _quicksort2(inputarr, first , pi-1);
+    _quicksort2(inputarr, pi+1, last);
+    return inputarr;
+}
+
+function _partition(arr, first , last ) {
+    pivot = last ;
+    j = first ;
+    for(let i = first; i< last; i++){
+        if(arr[i].distanceFromGrenoble <= arr[pivot].distanceFromGrenoble){
+            swap(i, j);
+            j++;
+        }
+    }
+    swap(last, j)
+    return j;
+}
 /** MODEL */
 
 class Ville {
