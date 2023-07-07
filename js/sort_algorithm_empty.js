@@ -18,6 +18,7 @@ function insertionSort(inputArr) {
       return inputArr;
 }
 
+//------------------------------------------------
 function selectionSort(inputArr) {
     console.log("implement me");
     for (let i = 0; i < inputArr.length; i++) {
@@ -32,6 +33,7 @@ function selectionSort(inputArr) {
     return inputArr;
 }
 
+//-----------------------------------------------
 function bubbleSort(inputArr) {
     console.log("implement me");
     let passage = 0;
@@ -49,6 +51,7 @@ function bubbleSort(inputArr) {
     return inputArr;
 }
 
+//---------------------------------------------
 function shellSort(inputArr) {
     console.log("implement me");
     let l = inputArr.length;
@@ -73,12 +76,53 @@ function shellSort(inputArr) {
     return inputArr;
 }
 
-function heapSort(inputArr, indexStart, indexEnd) {
+//------------------------------------------
+function heapSort(inputArr) {
     console.log("implement me");
+    for(i =1; i<inputArr-1; i++){
+      ascend(inputArr, i)
+    }
+
+    for(i=inputArr.length-1; i==0 ; i--){
+      swap(inputArr, 0, i);
+      descend(inputArr, i, 0);
+    }
+
     return inputArr;
 }
 
+function ascend(arr, index){
+  let parentNode;
+  if(index % 2 !=0){
+    parentNode = (index-1)/2;
+  }else{
+    parentNode = (index -2 )/2;
+  }
 
+  if(parentNode >= 0 && arr[index] > arr[parentNode]){
+    swap(arr, index , parentNode);
+    ascend(arr, parentNode);
+  }
+}
+
+function descend(arr, finTree, index){
+  let firstChild = (2*index) +1 ;
+  let max;
+  if(firstChild < finTree){
+    child2 = (2*index) + 2;
+    if(child2 >= finTree || arr[firstChild]> arr[child2]){
+      max = firstChild;
+    }else{
+      max = child2;
+    }
+    if(arr[max]> arr[index]){
+      swap(arr, max, index);
+      descend(arr, finTree, max);
+    }
+  }
+}
+
+//--------------------------------------
 function _mergesort(inputArr) {
   console.log("mergesort - implement me !");
   if(inputArr.length <2){
@@ -109,12 +153,12 @@ function _merge(left, right){
   }
 }
 
-
+//-----------------------------------------------
 function quickSort(arr, first, last) {
-  if (last - first < 1) {
-    return arr;
-  }
-
+  // ----------- method 1 
+  // if (arr.length < 2) {
+  //   return arr;
+  // }
   // let pivot = arr[arr.length-1];
   // let leftArr = [];
   // let rightArr = [];
@@ -129,6 +173,10 @@ function quickSort(arr, first, last) {
 
   // return [...quickSort(leftArr), pivot, ...quickSort(rightArr)];
 
+  //------------- method 2 
+  if (last - first < 1) {
+    return arr;
+  }
 
   pi = _partition(arr, first, last);
   quickSort(arr, first , pi-1);
@@ -179,22 +227,26 @@ var heapList = heapSort([...list]);
 
 var mergeList = _mergesort([...list]);
 
-var quickList = quickSort([7, 8, 6, 1, 0, 3, 5, 2], 0, size-1);
+var quickList = quickSort([...list], 0, size-1);
+
+var heapList = heapSort([...list]);
 
 // Affichage des résultats
 console.log("Liste non triee");
 console.log(list);
- console.log("Swap des deux premiers elements");
- console.log(swappedList);
- console.log("Insertion");
- console.log(insertionList)
- console.log("Selection");
- console.log(selectionList);
- console.log("Bubble");
- console.log(bubbleList);
- console.log("Shell");
- console.log(shellList);
+console.log("Swap des deux premiers elements");
+console.log(swappedList);
+console.log("Insertion");
+console.log(insertionList)
+console.log("Selection");
+console.log(selectionList);
+console.log("Bubble");
+console.log(bubbleList);
+console.log("Shell");
+console.log(shellList);
 console.log("Merge");
 console.log(mergeList);
 console.log("Quick");
+console.log(quickList);
+console.log("Heap");
 console.log(quickList);
